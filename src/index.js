@@ -1,5 +1,6 @@
 import { getFileExtension, readFile, getFileData } from './fileUtils.js';
 import genDiff1 from './differ.js';
+import getFormat from '../formatters/stylish.js';
 
 const genDiff = (file1, file2, format) => {
   // console.log(readFile(file1));
@@ -14,7 +15,8 @@ const genDiff = (file1, file2, format) => {
   // console.log(map.common.values.setting6.values.doge);
 
 
-  console.log(genDiff1(dict1, dict2));
+  // console.log(genDiff1(dict1, dict2));
+  console.log(getFormat(map));
   
   
   
