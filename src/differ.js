@@ -1,11 +1,11 @@
 import _ from 'lodash';
 
-const genDiff1 = (dict1, dict2) => {
+const getDiff = (dict1, dict2) => {
   const keys = _.union(Object.keys(dict1), Object.keys(dict2)).sort();
   // const keys = keys1.sort();
   return keys.reduce((acc, key) => {
     if (_.isPlainObject(dict1[key]) && _.isPlainObject(dict2[key])) {
-      acc[key] = { status: 'notplain', values: genDiff1(dict1[key], dict2[key]) };
+      acc[key] = { status: 'notplain', values: getDiff(dict1[key], dict2[key]) };
     } else if (!Object.hasOwn(dict2, key)) {
       acc[key] = { status: 'deleted', value1: dict1[key] };
     } else if (!Object.hasOwn(dict1, key)) {
@@ -19,4 +19,4 @@ const genDiff1 = (dict1, dict2) => {
   }, {});
 };
 
-export default genDiff1;
+export default getDiff;

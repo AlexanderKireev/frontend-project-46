@@ -1,30 +1,21 @@
-import { getFileExtension, readFile, getFileData } from './fileUtils.js';
-import genDiff1 from './differ.js';
-import getFormat from '../formatters/stylish.js';
+import { getFileExtension, readFile } from './fileUtils.js';
+import getParseData from './parsers.js';
+import getDiff from './differ.js';
+import getFormat from '../formatters/index.js';
 
 const genDiff = (file1, file2, format) => {
-  // console.log(readFile(file1));
-  // console.log(readFile(file2));
+  const fileData1 = readFile(file1);
+  const fileData2 = readFile(file2);
 
-  // console.log(getFileExtension(file1));
-  // console.log(getFileExtension(file2));
+  const ext1 = getFileExtension(file1);
+  const ext2 = getFileExtension(file2);
 
-  const dict1 = getFileData(file1);
-  const dict2 = getFileData(file2);
-  const map = genDiff1(dict1, dict2);
-  // console.log(map.common.values.setting6.values.doge);
+  const dict1 = getParseData(fileData1, ext1);
+  const dict2 = getParseData(fileData2, ext2);
 
+  const map = getDiff(dict1, dict2);
 
-  // console.log(genDiff1(dict1, dict2));
-  console.log(getFormat(map));
-  
-  
-  
-  
-  // console.log(getFileData(file1));
-  
-  return file1 + file2 + format;
-
+  return getFormat(format)(map);
 };
 
 export default genDiff;

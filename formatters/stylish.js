@@ -1,49 +1,49 @@
-const step = 4;
+import _ from 'lodash';
+
+const fourSteps = 4;
+const twoSteps = 2;
 const none = ' ';
-const add = '+';
-const del = '-';
+const add = '+ ';
+const del = '- ';
 const brace1 = '{';
 const brace2 = '}';
+const colon = ':';
 
-const isObject = (value) => Object.prototype.toString.call(value) === '[object Object]';
+// const isObject = (value) => Object.prototype.toString.call(value) === '[object Object]';
+
+const getConcatString = (string, count, key, operand, value) => string
+  .concat(`${none.repeat(count)}${operand}${key}${colon}${none}${value}\n`);
 
 const convObjToString = (obj, spaseCount) => Object.entries(obj)
   .reduce((string, [key, value]) => string
-    .concat(`\n${none.repeat(spaseCount + step * 2)}${key}: `)
-    .concat(isObject(value) ? `${convObjToString(value, spaseCount + step)}`
-      : `${value}`), brace1).concat(`\n${none.repeat(spaseCount + step)}${brace2}`);
+    .concat(`\n${none.repeat(spaseCount + fourSteps * twoSteps)}${key}: `)
+    .concat(_.isObject(value) ? `${convObjToString(value, spaseCount + fourSteps)}`
+      : `${value}`), brace1).concat(`\n${none.repeat(spaseCount + fourSteps)}${brace2}`);
 
-const getFormat = (obj, spaseCount = 0) => Object.entries(obj).reduce((string, [key, value]) => {
-  let str = '';
+const getStylish = (obj, spaseCount = 0) => Object.entries(obj).reduce((str, [key, value]) => {
   const {
     status, value1, value2, values,
   } = value;
 
-  const oldValue = isObject(value1) ? convObjToString(value1, spaseCount) : value1;
-  const newValue = isObject(value2) ? convObjToString(value2, spaseCount) : value2;
+  const oldValue = _.isObject(value1) ? convObjToString(value1, spaseCount) : value1;
+  const newValue = _.isObject(value2) ? convObjToString(value2, spaseCount) : value2;
 
   switch (status) {
     case 'unchanged':
-      str = str.concat(`${none.repeat(spaseCount + 2)}${none} ${key}: ${oldValue}`);
-      break;
+      return getConcatString(str, spaseCount + twoSteps, key, none.repeat(twoSteps), oldValue);
     case 'changed':
-      str = str.concat(`${none.repeat(spaseCount + 2)}${del} ${key}: ${oldValue}\n`)
-        .concat(`${none.repeat(spaseCount + 2)}${add} ${key}: ${newValue}`);
-      break;
+      return getConcatString(str, spaseCount + twoSteps, key, del, oldValue)
+        .concat(getConcatString('', spaseCount + twoSteps, key, add, newValue));
     case 'added':
-      str = str.concat(`${none.repeat(spaseCount + 2)}${add} ${key}: ${newValue}`);
-      break;
+      return getConcatString(str, spaseCount + twoSteps, key, add, newValue);
     case 'deleted':
-      str = str.concat(`${none.repeat(spaseCount + 2)}${del} ${key}: ${oldValue}`);
-      break;
+      return getConcatString(str, spaseCount + twoSteps, key, del, oldValue);
     case 'notplain':
-      str = str.concat(`${none.repeat(spaseCount + step)}${key}: `)
-        .concat(getFormat(values, spaseCount + step));
-      break;
+      return str.concat(`${none.repeat(spaseCount + fourSteps)}${key}: `)
+        .concat(getStylish(values, spaseCount + fourSteps)).concat('\n');
     default:
       throw new Error('Error value!');
   }
-  return string.concat(`${str}\n`);
 }, `${brace1}\n`).concat(`${none.repeat(spaseCount)}${brace2}`);
 
-export default getFormat;
+export default getStylish;
