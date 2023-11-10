@@ -3,7 +3,7 @@ import getParseData from './parsers.js';
 import getDiff from './differ.js';
 import getFormat from '../formatters/index.js';
 
-const genDiff = (file1, file2, format) => {
+const genDiff = (file1, file2, format = 'stylish') => {
   const fileData1 = readFile(file1);
   const fileData2 = readFile(file2);
 
