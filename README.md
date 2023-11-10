@@ -15,7 +15,7 @@
 
 ## Полученные навыки:
 
-- работой с разными форматами данных: json, yaml
+- работа с разными форматами данных: json, yaml
 - парсинг JSON.parse
 - CLI Builder (commander.js)
 - работа с модулями fs, path, process, js-yaml, lodash
@@ -85,6 +85,7 @@ gendiff [-hV] [-f=<formatName>] <filepath1> <filepath2>
 [![asciicast](https://asciinema.org/a/620269.svg)](https://asciinema.org/a/620269)
 
 Поддерживается также рекурсивное сравнение вложенных структур.
+
 Необязательный параметр - выбор формата генерации отчета. Определяется командой `-f (--format)` из трех возможных: `stylish` (по умолчанию), `plain` и `json`.
 #### Шаг 7 Проекта: пример дифа для вложенных структур в формате stylish
 [![asciicast](https://asciinema.org/a/620285.svg)](https://asciinema.org/a/620285)
