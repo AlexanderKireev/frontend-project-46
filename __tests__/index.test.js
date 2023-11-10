@@ -9,6 +9,7 @@ let yaml;
 let yml;
 let expectedStylish;
 let expectedPlain;
+let expectedJson;
 
 beforeAll(() => {
   const __filename = fileURLToPath(import.meta.url);
@@ -24,6 +25,7 @@ beforeAll(() => {
 
   expectedStylish = readFile('expected_stylish.txt');
   expectedPlain = readFile('expected_plain.txt');
+  expectedJson = readFile('expected_json.txt');
 });
 
 test('default (stylish) difference between two json files', () => {
@@ -36,6 +38,10 @@ test('stylish difference between two yaml files', () => {
 
 test('plain difference between two json files', () => {
   expect(genDiff(json1, json2, 'plain')).toEqual(expectedPlain);
+});
+
+test('json difference between two json files', () => {
+  expect(genDiff(json1, json2, 'json')).toEqual(expectedJson);
 });
 
 test('test difference between missing files', () => {
