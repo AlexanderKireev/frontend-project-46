@@ -59,10 +59,6 @@ test('json difference between two json files', () => {
   expect(genDiff(json1, json2, 'json')).toEqual(expectedJson);
 });
 
-// test('test difference between missing files', () => {
-//   expect(() => { genDiff(json1, 'some_file2.json'); }).toThrowError();
-// });
-
-test('test difference between missing files', () => {
+test('difference between missing files', () => {
   expect(() => { genDiff(json1, 'some_file2.json'); }).toThrow(new Error("File 'some_file2.json' not found!"));
 });

@@ -7,18 +7,19 @@ const getDiff = (dict1, dict2) => {
 
   return sortedKeys.reduce((acc, key) => {
     if (_.isPlainObject(dict1[key]) && _.isPlainObject(dict2[key])) {
-      acc[key] = { status: 'notplain', values: getDiff(dict1[key], dict2[key]) };
-    } else if (!Object.hasOwn(dict2, key)) {
+      return { ...acc, [key]: { status: 'notplain', values: getDiff(dict1[key], dict2[key]) } };
+    }
+    if (!Object.hasOwn(dict2, key)) {
       return { ...acc, [key]: { status: 'deleted', value1: dict1[key] } };
       // acc[key] = { status: 'deleted', value1: dict1[key] };
-    } else if (!Object.hasOwn(dict1, key)) {
-      acc[key] = { status: 'added', value2: dict2[key] };
-    } else if (dict1[key] === dict2[key]) {
-      acc[key] = { status: 'unchanged', value1: dict1[key] };
-    } else {
-      acc[key] = { status: 'changed', value1: dict1[key], value2: dict2[key] };
     }
-    return acc;
+    if (!Object.hasOwn(dict1, key)) {
+      return { ...acc, [key]: { status: 'added', value2: dict2[key] } };
+    }
+    if (dict1[key] === dict2[key]) {
+      return { ...acc, [key]: { status: 'unchanged', value1: dict1[key] } };
+    }
+    return { ...acc, [key]: { status: 'changed', value1: dict1[key], value2: dict2[key] } };
   }, {});
 };
 
