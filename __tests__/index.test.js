@@ -3,30 +3,45 @@ import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import genDiff from '../src/index.js';
 
-let json1;
-let json2;
-let yaml;
-let yml;
-let expectedStylish;
-let expectedPlain;
-let expectedJson;
+// let json1;
+// let json2;
+// let yaml;
+// let yml;
+// let expectedStylish;
+// let expectedPlain;
+// let expectedJson;
 
-beforeAll(() => {
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
+// beforeAll(() => {
+//   const __filename = fileURLToPath(import.meta.url);
+//   const __dirname = dirname(__filename);
 
-  const getFixturePath = (filename) => join(__dirname, '..', '__fixtures__', filename);
-  const readFile = (filename) => readFileSync(getFixturePath(filename), 'utf-8');
+//   const getFixturePath = (filename) => join(__dirname, '..', '__fixtures__', filename);
+//   const readFile = (filename) => readFileSync(getFixturePath(filename), 'utf-8');
 
-  json1 = getFixturePath('file1.json');
-  json2 = getFixturePath('file2.json');
-  yaml = getFixturePath('file1.yaml');
-  yml = getFixturePath('file2.yml');
+//   json1 = getFixturePath('file1.json');
+//   json2 = getFixturePath('file2.json');
+//   yaml = getFixturePath('file1.yaml');
+//   yml = getFixturePath('file2.yml');
 
-  expectedStylish = readFile('expected_stylish.txt');
-  expectedPlain = readFile('expected_plain.txt');
-  expectedJson = readFile('expected_json.txt');
-});
+//   expectedStylish = readFile('expected_stylish.txt');
+//   expectedPlain = readFile('expected_plain.txt');
+//   expectedJson = readFile('expected_json.txt');
+// });
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const getFixturePath = (filename) => join(__dirname, '..', '__fixtures__', filename);
+const readFile = (filename) => readFileSync(getFixturePath(filename), 'utf-8');
+
+const json1 = getFixturePath('file1.json');
+const json2 = getFixturePath('file2.json');
+const yaml = getFixturePath('file1.yaml');
+const yml = getFixturePath('file2.yml');
+
+const expectedStylish = readFile('expected_stylish.txt');
+const expectedPlain = readFile('expected_plain.txt');
+const expectedJson = readFile('expected_json.txt');
 
 test('default (stylish) difference between two json files', () => {
   expect(genDiff(json1, json2)).toEqual(expectedStylish);
@@ -44,6 +59,10 @@ test('json difference between two json files', () => {
   expect(genDiff(json1, json2, 'json')).toEqual(expectedJson);
 });
 
+// test('test difference between missing files', () => {
+//   expect(() => { genDiff(json1, 'some_file2.json'); }).toThrowError();
+// });
+
 test('test difference between missing files', () => {
-  expect(() => { genDiff(json1, 'some_file2.json'); }).toThrowError();
+  expect(() => { genDiff(json1, 'some_file2.json'); }).toThrow(new Error("File 'some_file2.json' not found!"));
 });
