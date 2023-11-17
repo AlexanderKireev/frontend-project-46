@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs';
 import path from 'path';
 import { cwd } from 'process';
+import parse from './parserFactory.js';
 
 const readFile = (filePath) => {
   const absolutePath = path.resolve(cwd(), filePath);
@@ -16,4 +17,6 @@ const readFile = (filePath) => {
 
 const getFileExtension = (filePath) => path.extname(filePath).slice(1);
 
-export { readFile, getFileExtension };
+const getParseData = (fileData, extention) => parse(extention)(fileData);
+
+export { readFile, getFileExtension, getParseData };

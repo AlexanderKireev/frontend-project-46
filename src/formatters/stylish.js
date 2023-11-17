@@ -9,8 +9,6 @@ const brace1 = '{';
 const brace2 = '}';
 const colon = ':';
 
-// const isObject = (value) => Object.prototype.toString.call(value) === '[object Object]';
-
 const getConcatString = (string, count, key, operand, value) => string
   .concat(`${none.repeat(count)}${operand}${key}${colon}${none}${value}\n`);
 
