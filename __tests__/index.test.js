@@ -8,11 +8,7 @@ const __dirname = dirname(__filename);
 
 const getFixturePath = (filename) => join(__dirname, '..', '__fixtures__', filename);
 
-describe.each([
-  ['stylish'],
-  ['plain'],
-  ['json'],
-])('%s formatter, difference between:', (formatter) => {
+describe.each([['stylish'], ['plain'], ['json']])('%s formatter, difference between:', (formatter) => {
   const filepathOfExpected = getFixturePath(`${formatter}.txt`);
   const expected = readFileSync(filepathOfExpected, 'utf-8');
 
@@ -33,10 +29,8 @@ describe('return errors:', () => {
   ])('%s', (expectedMessage, extension, formatter) => {
     const filepath1 = getFixturePath(`file1.${extension}`);
     const filepath2 = getFixturePath(`file2.${extension}`);
-    try {
+    expect(() => {
       genDiff(filepath1, filepath2, formatter);
-    } catch (error) {
-      expect(error.message).toContain(expectedMessage);
-    }
+    }).toThrow(expectedMessage);
   });
 });
