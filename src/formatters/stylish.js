@@ -18,27 +18,28 @@ const convObjToString = (obj, spaseCount) => Object.entries(obj)
     .concat(_.isObject(value) ? `${convObjToString(value, spaseCount + fourSteps)}`
       : `${value}`), brace1).concat(`\n${none.repeat(spaseCount + fourSteps)}${brace2}`);
 
-const getStylish = (obj, spaseCount = 0) => Object.entries(obj).reduce((str, [key, value]) => {
+const getStylish = (obj, spaseCount = 0) => Object.entries(obj).reduce((str, [key, values]) => {
   const {
-    status, value1, value2, values,
-  } = value;
+    status, value, changedValue, children,
+  } = values;
 
-  const oldValue = _.isObject(value1) ? convObjToString(value1, spaseCount) : value1;
-  const newValue = _.isObject(value2) ? convObjToString(value2, spaseCount) : value2;
+  const firstValue = _.isObject(value) ? convObjToString(value, spaseCount) : value;
+  const secondValue = _.isObject(changedValue)
+    ? convObjToString(changedValue, spaseCount) : changedValue;
 
   switch (status) {
     case 'unchanged':
-      return getConcatString(str, spaseCount + twoSteps, key, none.repeat(twoSteps), oldValue);
+      return getConcatString(str, spaseCount + twoSteps, key, none.repeat(twoSteps), firstValue);
     case 'changed':
-      return getConcatString(str, spaseCount + twoSteps, key, del, oldValue)
-        .concat(getConcatString('', spaseCount + twoSteps, key, add, newValue));
+      return getConcatString(str, spaseCount + twoSteps, key, del, firstValue)
+        .concat(getConcatString('', spaseCount + twoSteps, key, add, secondValue));
     case 'added':
-      return getConcatString(str, spaseCount + twoSteps, key, add, newValue);
+      return getConcatString(str, spaseCount + twoSteps, key, add, firstValue);
     case 'deleted':
-      return getConcatString(str, spaseCount + twoSteps, key, del, oldValue);
+      return getConcatString(str, spaseCount + twoSteps, key, del, firstValue);
     case 'notplain':
       return str.concat(`${none.repeat(spaseCount + fourSteps)}${key}: `)
-        .concat(getStylish(values, spaseCount + fourSteps)).concat('\n');
+        .concat(getStylish(children, spaseCount + fourSteps)).concat('\n');
     default:
       throw new Error('Error value!');
   }

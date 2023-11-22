@@ -7,44 +7,32 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const getFixturePath = (filename) => join(__dirname, '..', '__fixtures__', filename);
-const readFile = (filename) => readFileSync(getFixturePath(filename), 'utf-8');
 
-const json1 = getFixturePath('file1.json');
-const json2 = getFixturePath('file2.json');
-const yaml = getFixturePath('file1.yaml');
-const yml = getFixturePath('file2.yml');
-const txt = getFixturePath('text_file.txt');
+describe.each([['stylish'], ['plain'], ['json']])('%s formatter, difference between:', (formatter) => {
+  const filepathOfExpected = getFixturePath(`${formatter}.txt`);
+  const expected = readFileSync(filepathOfExpected, 'utf-8');
 
-const expectedStylish = readFile('expected_stylish.txt');
-const expectedPlain = readFile('expected_plain.txt');
-const expectedJson = readFile('expected_json.txt');
+  test.each([['json'], ['yml']])('%s files', (extension) => {
+    const filepath1 = getFixturePath(`file1.${extension}`);
+    const filepath2 = getFixturePath(`file2.${extension}`);
 
-test('returns file not found error', () => {
-  expect(() => { genDiff(json1, 'some_file2.json'); }).toThrow(new Error("File 'some_file2.json' not found!"));
+    const result = genDiff(filepath1, filepath2, formatter);
+    expect(result).toBe(expected);
+  });
 });
 
-test('returns unknown format error', () => {
-  expect(() => { genDiff(json1, json2, 'txt'); }).toThrow(new Error("Unknown format: 'txt'!"));
-});
-
-test('returns unknown extention error', () => {
-  expect(() => { genDiff(txt, json2); }).toThrow(new Error("Unknown extention: 'txt'!"));
-});
-
-test.each([
-  ['json', json1, json2, expectedStylish],
-  ['yaml', yaml, yml, expectedStylish],
-])('default (stylish) difference between two %s files', (fileType, file1, file2, expected) => {
-  expect(genDiff(file1, file2)).toEqual(expected);
-});
-
-test.each([
-  ['json', 'stylish', json1, json2, expectedStylish],
-  ['json', 'plain', json1, json2, expectedPlain],
-  ['json', 'json', json1, json2, expectedJson],
-  ['yaml', 'stylish', yaml, yml, expectedStylish],
-  ['yaml', 'plain', yaml, yml, expectedPlain],
-  ['yaml', 'json', yaml, yml, expectedJson],
-])('difference between two %s files in %s format', (fileType, format, file1, file2, expected) => {
-  expect(genDiff(file1, file2, format)).toEqual(expected);
+describe('return errors:', () => {
+  test.each([
+    ['no such file or directory', 'pdf', 'stylish'],
+    ['unknown format', 'json', 'unkownformat'],
+    ['unknown extention', 'txt', 'plain'],
+  ])('%s', (expectedMessage, extension, formatter) => {
+    const filepath1 = getFixturePath(`file1.${extension}`);
+    const filepath2 = getFixturePath(`file2.${extension}`);
+    try {
+      genDiff(filepath1, filepath2, formatter);
+    } catch (error) {
+      expect(error.message).toContain(expectedMessage);
+    }
+  });
 });

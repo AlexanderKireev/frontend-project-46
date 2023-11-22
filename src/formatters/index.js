@@ -8,9 +8,9 @@ const getFormat = (format) => {
     case 'plain':
       return (obj) => getPlain(obj);
     case 'json':
-      return (obj) => JSON.stringify(obj);
+      return (obj) => JSON.stringify(obj, ' ', 2);
     default:
-      throw new Error(`Unknown format: '${format}'!`);
+      throw new Error(`unknown format: '${format}'`);
   }
 };
 

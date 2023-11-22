@@ -8,7 +8,7 @@ const parse = (ext) => {
     case 'yaml':
       return (data) => yaml.load(data);
     default:
-      throw new Error(`Unknown extention: '${ext}'!`);
+      throw new Error(`unknown extention: '${ext}'`);
   }
 };
 
