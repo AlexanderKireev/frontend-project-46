@@ -91,4 +91,4 @@ gendiff [-hV] [-f=<formatName>] <filepath1> <filepath2>
 [![asciicast](https://asciinema.org/a/620275.svg)](https://asciinema.org/a/620275)
 
 #### Шаг 9 Проекта: вывод в формате json
-[![asciicast](https://asciinema.org/a/620277.svg)](https://asciinema.org/a/620277)
+[![asciicast](https://asciinema.org/a/622732.svg)](https://asciinema.org/a/622732)
