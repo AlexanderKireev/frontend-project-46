@@ -7,7 +7,7 @@
 ## Проект "Вычислитель отличий" ("Difference Calculator")
 Выполнен в рамках обучения в компании "Хекслет" ("Hexlet Ltd.") на курсе "фронтенд-разработчик".
 
-Принят: XX XXXX 2023 года. Студент: Киреев Александр. Куратор: Шайдеров Игорь ("Hexlet Ltd.").
+Принят: 24 ноября 2023 года. Студент: Киреев Александр. Куратор: Шайдеров Игорь ("Hexlet Ltd.").
 
 [![Hexlet Ltd. logo](https://raw.githubusercontent.com/Hexlet/assets/master/images/hexlet_logo128.png)](https://ru.hexlet.io/pages/about?utm_source=github&utm_medium=link&utm_campaign=java-package)
 
